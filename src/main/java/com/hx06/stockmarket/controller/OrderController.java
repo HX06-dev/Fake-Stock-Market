@@ -15,11 +15,11 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<Transaction> placeOrder(Authentication authentication,
-                                                  @RequestBody OrderRequest request) {
-        String email = authentication.getName();
+    public ResponseEntity<Transaction> placeOrder(Authentication auth,
+                                                  @RequestBody OrderRequest req) {
+        String email = auth.getName();
         Transaction tx = orderService.executeOrder(
-                email, request.getTicker(), request.getSide(), request.getQuantity()
+                email, req.getTicker(), req.getSide(), req.getQuantity()
         );
         return ResponseEntity.ok(tx);
     }

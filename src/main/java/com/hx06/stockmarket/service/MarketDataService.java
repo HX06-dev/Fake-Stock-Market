@@ -2,9 +2,9 @@ package com.hx06.stockmarket.service;
 
 import com.hx06.stockmarket.dto.QuoteResponse;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 
@@ -16,7 +16,9 @@ public class MarketDataService {
 
     private final RestClient restClient = RestClient.create();
 
+    @Cacheable(value = "stockPrices", key = "#ticker")
     public BigDecimal getCurrentPrice(String ticker) {
+        System.out.println("FETCHING FROM API: " + ticker); // REMOVE LATER
         String url = String.format(
             "https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=%s&apikey=%s",
             ticker, apiKey
